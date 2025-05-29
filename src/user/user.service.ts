@@ -1,15 +1,13 @@
 import { Injectable } from '@nestjs/common'
 import { DatabaseService } from 'src/database/database.service'
-import { User, CreateUserDto, UpdatePasswordDto, UserResponse } from 'src/types'
-import { v4 as uuidv4 } from 'uuid'
+import { User, CreateUserDto, UpdatePasswordDto, UserResponse, errors } from 'src/types'
+import { v4 as uuidv4, validate } from 'uuid'
 
 @Injectable()
 export class UserService {
     constructor(private database: DatabaseService) {}
 
     getAllUsers(): UserResponse {
-        // console.log('get all!!!!!')
-        // const users = 
         return {
             data: this.database.users.map(user => {
                 const watchedUser = { ...user }
@@ -21,13 +19,45 @@ export class UserService {
     }
 
     getUserById(id: string): UserResponse {
+        console.log('getUserById', id)
+        const user = this.database.users.find(user => user.id === id)
+
+        if (!validate(id)) {
+            return {
+                data: null,
+                error: errors.BAD_REQUEST
+            }
+        }
+
+        if (!user) {
+            return {
+                data: null,
+                error: errors.NOT_FOUND
+            }
+        }
+
+        const returnedUser = { ...user }
+        delete returnedUser.password
+
         return {
-            data: this.database.users.find(user => user.id === id),
+            data: returnedUser,
             error: null
         }
+
     }
 
     createUser(dto: CreateUserDto): UserResponse {
+        if (
+            Object.keys(dto).length === 0 ||
+            !dto.login ||
+            !dto.password
+        ) {
+            return {
+                data: null,
+                error: errors.BAD_REQUEST
+            }
+        }
+
         const timestamp = Date.now()
         const id = uuidv4()
 
@@ -41,26 +71,68 @@ export class UserService {
 
         this.database.users.push(createdUser)
 
+        const returnedUser = { ...createdUser }
+        delete returnedUser.password
+
         return {
-            data: createdUser,
+            data: returnedUser,
             error: null
         }
     }
 
     updateUser(id: string, dto: UpdatePasswordDto): UserResponse {
         const updateUser = this.database.users.find(user => user.id === id)
+
+        if (
+            Object.keys(dto).length === 0 ||
+            !dto.oldPassword ||
+            !dto.newPassword
+        ) {
+            return {
+                data: null,
+                error: errors.BAD_REQUEST
+            }
+        }
+
+        if (!updateUser) {
+            return {
+                data: null,
+                error: errors.NOT_FOUND
+            }
+        }
+
+        if (updateUser.password !== dto.oldPassword) {
+            return {
+                data: null,
+                error: errors.WRONG_PASSWORD
+            }
+        }
+
         updateUser.updatedAt = Date.now()
         updateUser.password = dto.newPassword
         updateUser.version += 1
 
+        const returnedUser = { ...updateUser }
+        delete returnedUser.password
+
+        console.log('returnedUser', returnedUser)
+
         return {
-            data: updateUser,
+            data: returnedUser,
             error: null
         }
     }
 
     removeUser(id: String): UserResponse {
         const index = this.database.users.findIndex(user => user.id === id)
+
+        if (index < 0) {
+            return {
+                data: null,
+                error: errors.NOT_FOUND
+            }
+        }
+
         this.database.users.splice(index, 1)
 
         return {
