@@ -1,3 +1,5 @@
+import { errors } from "./common";
+
 export interface CreateUserDto {
     login: string;
     password: string;
@@ -13,4 +15,11 @@ export interface User extends CreateUserDto {
 export interface UpdatePasswordDto {
     oldPassword: string; // previous password
     newPassword: string; // new password
+}
+
+export type UserType = Omit<User, 'password'>
+
+export interface UserResponse {
+    data: UserType | UserType[] | null
+    error: errors | null
 }
