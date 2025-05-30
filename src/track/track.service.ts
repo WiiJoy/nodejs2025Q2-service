@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
+import { UpdateTrackDto } from './dto/update-track.dto';
 import { TrackCreate, TrackResponse, errors } from 'src/types';
 import { v4 as uuidv4, validate } from 'uuid';
 
@@ -64,7 +65,7 @@ export class TrackService {
     }
   }
 
-  update(id: string, dto: TrackCreate): TrackResponse {
+  update(id: string, dto: UpdateTrackDto): TrackResponse {
     const updateTrack = this.database.tracks.find(track => track.id === id)
 
     if (

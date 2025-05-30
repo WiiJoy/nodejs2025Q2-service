@@ -12,7 +12,6 @@ export class TrackController {
   @Post()
   @UsePipes(new ValidationPipe())
   create(@Body() dto: CreateTrackDto) {
-    console.log('post', dto)
     const res = this.trackService.create(dto)
 
     if (res.error === errors.BAD_REQUEST) {
