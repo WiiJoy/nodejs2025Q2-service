@@ -1,143 +1,139 @@
-import { Injectable } from '@nestjs/common'
-import { DatabaseService } from 'src/database/database.service'
-import { User, CreateUserDto, UpdatePasswordDto, UserResponse, errors } from 'src/types'
-import { v4 as uuidv4, validate } from 'uuid'
+import { Injectable } from '@nestjs/common';
+import { DatabaseService } from 'src/database/database.service';
+import {
+  CreateUserDto,
+  UpdatePasswordDto,
+  UserResponse,
+  errors,
+} from 'src/types';
+import { v4 as uuidv4, validate } from 'uuid';
 
 @Injectable()
 export class UserService {
-    constructor(private database: DatabaseService) {}
+  constructor(private database: DatabaseService) {}
 
-    getAllUsers(): UserResponse {
-        return {
-            data: this.database.users.map(user => {
-                const watchedUser = { ...user }
-                delete watchedUser.password
-                return watchedUser
-            }),
-            error: null
-        }
+  getAllUsers(): UserResponse {
+    return {
+      data: this.database.users.map((user) => {
+        const watchedUser = { ...user };
+        delete watchedUser.password;
+        return watchedUser;
+      }),
+      error: null,
+    };
+  }
+
+  getUserById(id: string): UserResponse {
+    console.log('getUserById', id);
+    const user = this.database.users.find((user) => user.id === id);
+
+    if (!validate(id)) {
+      return {
+        data: null,
+        error: errors.BAD_REQUEST,
+      };
     }
 
-    getUserById(id: string): UserResponse {
-        console.log('getUserById', id)
-        const user = this.database.users.find(user => user.id === id)
-
-        if (!validate(id)) {
-            return {
-                data: null,
-                error: errors.BAD_REQUEST
-            }
-        }
-
-        if (!user) {
-            return {
-                data: null,
-                error: errors.NOT_FOUND
-            }
-        }
-
-        const returnedUser = { ...user }
-        delete returnedUser.password
-
-        return {
-            data: returnedUser,
-            error: null
-        }
-
+    if (!user) {
+      return {
+        data: null,
+        error: errors.NOT_FOUND,
+      };
     }
 
-    createUser(dto: CreateUserDto): UserResponse {
-        if (
-            Object.keys(dto).length === 0 ||
-            !dto.login ||
-            !dto.password
-        ) {
-            return {
-                data: null,
-                error: errors.BAD_REQUEST
-            }
-        }
+    const returnedUser = { ...user };
+    delete returnedUser.password;
 
-        const timestamp = Date.now()
-        const id = uuidv4()
+    return {
+      data: returnedUser,
+      error: null,
+    };
+  }
 
-        const createdUser = {
-            ...dto,
-            id,
-            version: 1,
-            createdAt: timestamp,
-            updatedAt: timestamp
-        }
-
-        this.database.users.push(createdUser)
-
-        const returnedUser = { ...createdUser }
-        delete returnedUser.password
-
-        return {
-            data: returnedUser,
-            error: null
-        }
+  createUser(dto: CreateUserDto): UserResponse {
+    if (Object.keys(dto).length === 0 || !dto.login || !dto.password) {
+      return {
+        data: null,
+        error: errors.BAD_REQUEST,
+      };
     }
 
-    updateUser(id: string, dto: UpdatePasswordDto): UserResponse {
-        const updateUser = this.database.users.find(user => user.id === id)
+    const timestamp = Date.now();
+    const id = uuidv4();
 
-        if (
-            Object.keys(dto).length === 0 ||
-            !dto.oldPassword ||
-            !dto.newPassword
-        ) {
-            return {
-                data: null,
-                error: errors.BAD_REQUEST
-            }
-        }
+    const createdUser = {
+      ...dto,
+      id,
+      version: 1,
+      createdAt: timestamp,
+      updatedAt: timestamp,
+    };
 
-        if (!updateUser) {
-            return {
-                data: null,
-                error: errors.NOT_FOUND
-            }
-        }
+    this.database.users.push(createdUser);
 
-        if (updateUser.password !== dto.oldPassword) {
-            return {
-                data: null,
-                error: errors.WRONG_PASSWORD
-            }
-        }
+    const returnedUser = { ...createdUser };
+    delete returnedUser.password;
 
-        updateUser.updatedAt = Date.now()
-        updateUser.password = dto.newPassword
-        updateUser.version += 1
+    return {
+      data: returnedUser,
+      error: null,
+    };
+  }
 
-        const returnedUser = { ...updateUser }
-        delete returnedUser.password
+  updateUser(id: string, dto: UpdatePasswordDto): UserResponse {
+    const updateUser = this.database.users.find((user) => user.id === id);
 
-        console.log('returnedUser', returnedUser)
-
-        return {
-            data: returnedUser,
-            error: null
-        }
+    if (Object.keys(dto).length === 0 || !dto.oldPassword || !dto.newPassword) {
+      return {
+        data: null,
+        error: errors.BAD_REQUEST,
+      };
     }
 
-    removeUser(id: string): UserResponse {
-        const index = this.database.users.findIndex(user => user.id === id)
-
-        if (index < 0) {
-            return {
-                data: null,
-                error: errors.NOT_FOUND
-            }
-        }
-
-        this.database.users.splice(index, 1)
-
-        return {
-            data: null,
-            error: null
-        }
+    if (!updateUser) {
+      return {
+        data: null,
+        error: errors.NOT_FOUND,
+      };
     }
+
+    if (updateUser.password !== dto.oldPassword) {
+      return {
+        data: null,
+        error: errors.WRONG_PASSWORD,
+      };
+    }
+
+    updateUser.updatedAt = Date.now();
+    updateUser.password = dto.newPassword;
+    updateUser.version += 1;
+
+    const returnedUser = { ...updateUser };
+    delete returnedUser.password;
+
+    console.log('returnedUser', returnedUser);
+
+    return {
+      data: returnedUser,
+      error: null,
+    };
+  }
+
+  removeUser(id: string): UserResponse {
+    const index = this.database.users.findIndex((user) => user.id === id);
+
+    if (index < 0) {
+      return {
+        data: null,
+        error: errors.NOT_FOUND,
+      };
+    }
+
+    this.database.users.splice(index, 1);
+
+    return {
+      data: null,
+      error: null,
+    };
+  }
 }

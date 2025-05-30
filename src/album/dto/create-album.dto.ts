@@ -1,15 +1,14 @@
-import { AlbumCreate } from "src/types";
-import { IsString, IsInt, ValidateIf } from "class-validator";
+import { AlbumCreate } from 'src/types';
+import { IsString, IsInt, ValidateIf } from 'class-validator';
 
 export class CreateAlbumDto implements AlbumCreate {
-    
-    @IsString()
-    name: string;
+  @IsString()
+  name: string;
 
-    @IsInt()
-    year: number;
+  @IsInt()
+  year: number;
 
-    @IsString()
-    @ValidateIf((_, value) => value !== null)
-    artistId: string | null;
+  @IsString()
+  @ValidateIf((_, value) => value !== null)
+  artistId: string | null;
 }

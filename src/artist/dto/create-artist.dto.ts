@@ -1,10 +1,10 @@
-import { ArtistCreate } from 'src/types'
-import { IsString, IsBoolean } from 'class-validator'
+import { ArtistCreate } from 'src/types';
+import { IsString, IsBoolean } from 'class-validator';
 
 export class CreateArtistDto implements ArtistCreate {
-    @IsString()
-    name: string;
+  @IsString()
+  name: string;
 
-    @IsBoolean()
-    grammy: boolean;
+  @IsBoolean()
+  grammy: boolean;
 }

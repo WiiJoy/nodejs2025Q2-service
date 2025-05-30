@@ -16,57 +16,57 @@ export class TrackService {
     ) {
       return {
         data: null,
-        error: errors.BAD_REQUEST
-      }
+        error: errors.BAD_REQUEST,
+      };
     }
 
-    const id = uuidv4()
+    const id = uuidv4();
 
     const createdTrack = {
       ...dto,
       id,
-    }
+    };
 
-    this.database.tracks.push(createdTrack)
+    this.database.tracks.push(createdTrack);
 
     return {
       data: createdTrack,
-      error: null
-    }
+      error: null,
+    };
   }
 
   findAll(): TrackResponse {
     return {
       data: this.database.tracks,
-      error: null
+      error: null,
     };
   }
 
   findOne(id: string): TrackResponse {
-    const track = this.database.tracks.find(track => track.id === id)
+    const track = this.database.tracks.find((track) => track.id === id);
 
     if (!validate(id)) {
       return {
         data: null,
-        error: errors.BAD_REQUEST
-      }
+        error: errors.BAD_REQUEST,
+      };
     }
 
     if (!track) {
       return {
         data: null,
-        error: errors.NOT_FOUND
-      }
+        error: errors.NOT_FOUND,
+      };
     }
 
     return {
       data: track,
-      error: null
-    }
+      error: null,
+    };
   }
 
   update(id: string, dto: UpdateTrackDto): TrackResponse {
-    const updateTrack = this.database.tracks.find(track => track.id === id)
+    const updateTrack = this.database.tracks.find((track) => track.id === id);
 
     if (
       Object.keys(dto).length === 0 ||
@@ -75,48 +75,50 @@ export class TrackService {
     ) {
       return {
         data: null,
-        error: errors.BAD_REQUEST
-      }
+        error: errors.BAD_REQUEST,
+      };
     }
 
     if (!updateTrack) {
       return {
         data: null,
-        error: errors.NOT_FOUND
-      }
+        error: errors.NOT_FOUND,
+      };
     }
 
-    updateTrack.name = dto.name
-    updateTrack.duration = dto.duration
-    updateTrack.albumId = dto.albumId || null
-    updateTrack.artistId = dto.artistId || null
+    updateTrack.name = dto.name;
+    updateTrack.duration = dto.duration;
+    updateTrack.albumId = dto.albumId || null;
+    updateTrack.artistId = dto.artistId || null;
 
     return {
       data: updateTrack,
-      error: null
-    }
+      error: null,
+    };
   }
 
   remove(id: string): TrackResponse {
-    const index = this.database.tracks.findIndex(track => track.id === id)
+    const index = this.database.tracks.findIndex((track) => track.id === id);
 
     if (index < 0) {
       return {
         data: null,
-        error: errors.NOT_FOUND
-      }
+        error: errors.NOT_FOUND,
+      };
     }
 
-    this.database.tracks.splice(index, 1)
+    this.database.tracks.splice(index, 1);
 
-    const inFavorites = this.database.favorites.tracks.findIndex(item => item === id)
+    const inFavorites = this.database.favorites.tracks.findIndex(
+      (item) => item === id,
+    );
     if (inFavorites !== -1) {
-      this.database.favorites.tracks.splice(inFavorites, 1)
+      this.database.favorites.tracks.splice(inFavorites, 1);
     }
 
     return {
       data: null,
-      error: null
-    }
+      error: null,
+    };
   }
 }

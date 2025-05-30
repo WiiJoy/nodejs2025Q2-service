@@ -6,6 +6,6 @@ import { DatabaseModule } from 'src/database/database.module';
 @Module({
   controllers: [FavsController],
   providers: [FavsService],
-  imports: [DatabaseModule]
+  imports: [DatabaseModule],
 })
 export class FavoriteModule {}
