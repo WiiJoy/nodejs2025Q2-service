@@ -5,7 +5,6 @@ import { DatabaseService } from 'src/database/database.service'
 import { ArtistResponse } from 'src/types';
 import { validate, v4 as uuidv4 } from 'uuid';
 import { errors } from 'src/types';
-import { strict } from 'assert';
 
 @Injectable()
 export class ArtistService {
