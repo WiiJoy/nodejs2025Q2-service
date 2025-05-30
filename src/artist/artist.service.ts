@@ -117,6 +117,11 @@ export class ArtistService {
       if (album.artistId === id) album.artistId = null
     })
 
+    const inFavorites = this.database.favorites.artists.findIndex(item => item === id)
+    if (inFavorites !== -1) {
+      this.database.favorites.artists.splice(inFavorites, 1)
+    }
+
     return {
       data: null,
       error: null

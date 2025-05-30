@@ -71,7 +71,7 @@ export class AlbumController {
     const res = this.albumService.remove(id)
 
     if (res.error === errors.NOT_FOUND) {
-        throw new HttpException(errors.NOT_FOUND, HttpStatus.NOT_FOUND)
+      throw new HttpException(errors.NOT_FOUND, HttpStatus.NOT_FOUND)
     }
   }
 }

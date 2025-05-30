@@ -109,6 +109,11 @@ export class TrackService {
 
     this.database.tracks.splice(index, 1)
 
+    const inFavorites = this.database.favorites.tracks.findIndex(item => item === id)
+    if (inFavorites !== -1) {
+      this.database.favorites.tracks.splice(inFavorites, 1)
+    }
+
     return {
       data: null,
       error: null
