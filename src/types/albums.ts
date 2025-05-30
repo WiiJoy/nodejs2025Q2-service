@@ -1,3 +1,5 @@
+import { errors } from "./common";
+
 export interface AlbumCreate {
     name: string;
     year: number;
@@ -6,4 +8,9 @@ export interface AlbumCreate {
 
 export interface Album extends AlbumCreate {
     id: string; // uuid v4
+}
+
+export interface AlbumResponse {
+    data: Album | Album[] | null
+    error: errors | null
 }
