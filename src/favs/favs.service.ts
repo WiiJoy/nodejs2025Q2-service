@@ -1,26 +1,88 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFavDto } from './dto/create-fav.dto';
-import { UpdateFavDto } from './dto/update-fav.dto';
+import { DatabaseService } from 'src/database/database.service';
+import { FavoriteResponse } from 'src/types';
 
 @Injectable()
 export class FavsService {
-  create(createFavDto: CreateFavDto) {
-    return 'This action adds a new fav';
+  constructor(private database: DatabaseService) {}
+
+  getAll(): FavoriteResponse {
+    const favorites = this.database.favorites
+    const tracks = favorites.tracks.map(trackId => this.database.tracks.find((track) => track.id === trackId))
+    const albums = favorites.albums.map(albumId => this.database.albums.find((album) => album.id === albumId))
+    const artists = favorites.artists.map(artistId => this.database.artists.find((artist) => artist.id === artistId))
+
+    return { tracks, albums, artists }
   }
 
-  findAll() {
-    return `This action returns all favs`;
+  addTrack(id: string) {
+    const track = this.database.tracks.find(track => track.id === id)
+    
+    if (!track) return false
+
+    const isExist = this.database.favorites.tracks.includes(track.id)
+    if (!isExist) {
+      this.database.favorites.tracks.push(track.id)
+    }
+
+    return true
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} fav`;
+  addAlbum(id: string) {
+    const album = this.database.albums.find(album => album.id === id)
+    
+    if (!album) return false
+
+    const isExist = this.database.favorites.albums.includes(album.id)
+    if (!isExist) {
+      this.database.favorites.albums.push(album.id)
+    }
+
+    return true
   }
 
-  update(id: number, updateFavDto: UpdateFavDto) {
-    return `This action updates a #${id} fav`;
+  addArtist(id: string) {
+    const artist = this.database.artists.find(artist => artist.id === id)
+    
+    if (!artist) return false
+
+    const isExist = this.database.favorites.artists.includes(artist.id)
+    if (!isExist) {
+      this.database.favorites.artists.push(artist.id)
+    }
+
+    return true
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} fav`;
+  removeTrack(id: string) {
+    const index = this.database.favorites.tracks.findIndex(trackId => trackId === id)
+    
+    if (index === -1) return false
+
+    this.database.favorites.tracks.splice(index, 1)
+
+    return true
+  }
+
+  removeAlbum(id: string) {
+    const index = this.database.favorites.albums.findIndex(albumId => albumId === id)
+    
+    if (index === -1) return false
+
+    this.database.favorites.albums.splice(index, 1)
+
+    return true
+  }
+
+  removeArtist(id: string) {
+    const index = this.database.favorites.artists.findIndex(artistId => artistId === id)
+    
+    if (index === -1) return false
+
+    console.log('remove', id, index)
+
+    this.database.favorites.artists.splice(index, 1)
+
+    return true
   }
 }
