@@ -7,18 +7,14 @@ import { validate } from 'uuid'
 export class UserController {
     constructor (private readonly userService: UserService) {}
 
-    // throw new HttpException('User data invalid', HttpStatus.BAD_REQUEST)
-
     @Get()
     getAll() {
-        console.log('get all users 2')
         const res = this.userService.getAllUsers()
         return res.data
     }
 
     @Get(':id')
     getById(@Param('id', ParseUUIDPipe) id: string) {
-        console.log('get by id', validate(id))
         const res = this.userService.getUserById(id)
 
         if (res.error === errors.NOT_FOUND) {
@@ -57,8 +53,6 @@ export class UserController {
         if (res.error === errors.BAD_REQUEST) {
             throw new HttpException(errors.BAD_REQUEST, HttpStatus.BAD_REQUEST)
         }
-
-        console.log('Put', res.data)
 
         return res.data
     }

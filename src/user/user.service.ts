@@ -123,7 +123,7 @@ export class UserService {
         }
     }
 
-    removeUser(id: String): UserResponse {
+    removeUser(id: string): UserResponse {
         const index = this.database.users.findIndex(user => user.id === id)
 
         if (index < 0) {
