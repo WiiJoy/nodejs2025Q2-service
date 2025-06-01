@@ -44,11 +44,11 @@ export class TrackController {
   findOne(@Param('id') id: string) {
     const res = this.trackService.findOne(id);
 
-    if (res.error === errors.NOT_FOUND) {
-      throw new HttpException(errors.NOT_FOUND, HttpStatus.NOT_FOUND);
+    if (res.error === errors.TRACK_NOT_FOUND) {
+      throw new HttpException(errors.TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
-    if (res.error === errors.BAD_REQUEST) {
-      throw new HttpException(errors.BAD_REQUEST, HttpStatus.BAD_REQUEST);
+    if (res.error === errors.INVALID_ID) {
+      throw new HttpException(errors.INVALID_ID, HttpStatus.BAD_REQUEST);
     }
 
     return res.data;
@@ -57,16 +57,13 @@ export class TrackController {
   @Put(':id')
   update(@Param('id') id: string, @Body() dto: UpdateTrackDto) {
     if (!validate(id)) {
-      throw new HttpException(errors.BAD_REQUEST, HttpStatus.BAD_REQUEST);
+      throw new HttpException(errors.INVALID_ID, HttpStatus.BAD_REQUEST);
     }
 
     const res = this.trackService.update(id, dto);
 
-    if (res.error === errors.NOT_FOUND) {
-      throw new HttpException(errors.NOT_FOUND, HttpStatus.NOT_FOUND);
-    }
-    if (res.error === errors.WRONG_PASSWORD) {
-      throw new HttpException(errors.WRONG_PASSWORD, HttpStatus.FORBIDDEN);
+    if (res.error === errors.TRACK_NOT_FOUND) {
+      throw new HttpException(errors.TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
     if (res.error === errors.BAD_REQUEST) {
       throw new HttpException(errors.BAD_REQUEST, HttpStatus.BAD_REQUEST);
@@ -79,12 +76,12 @@ export class TrackController {
   @HttpCode(204)
   remove(@Param('id') id: string) {
     if (!validate(id)) {
-      throw new HttpException(errors.BAD_REQUEST, HttpStatus.BAD_REQUEST);
+      throw new HttpException(errors.INVALID_ID, HttpStatus.BAD_REQUEST);
     }
     const res = this.trackService.remove(id);
 
-    if (res.error === errors.NOT_FOUND) {
-      throw new HttpException(errors.NOT_FOUND, HttpStatus.NOT_FOUND);
+    if (res.error === errors.TRACK_NOT_FOUND) {
+      throw new HttpException(errors.TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
   }
 }

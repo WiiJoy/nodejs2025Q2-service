@@ -24,14 +24,14 @@ export class FavsController {
   @Post('track/:id')
   addTrack(@Param('id') id: string): string {
     if (!validate(id)) {
-      throw new HttpException(errors.BAD_REQUEST, HttpStatus.BAD_REQUEST);
+      throw new HttpException(errors.INVALID_ID, HttpStatus.BAD_REQUEST);
     }
 
     const res = this.favsService.addTrack(id);
 
     if (!res) {
       throw new HttpException(
-        'Track not found',
+        errors.TRACK_NOT_EXIST,
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }
@@ -42,14 +42,14 @@ export class FavsController {
   @Post('album/:id')
   addAlbum(@Param('id') id: string): string {
     if (!validate(id)) {
-      throw new HttpException(errors.BAD_REQUEST, HttpStatus.BAD_REQUEST);
+      throw new HttpException(errors.INVALID_ID, HttpStatus.BAD_REQUEST);
     }
 
     const res = this.favsService.addAlbum(id);
 
     if (!res) {
       throw new HttpException(
-        'Album not found',
+        errors.ALBUM_NOT_EXIST,
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }
@@ -60,14 +60,14 @@ export class FavsController {
   @Post('artist/:id')
   addArtist(@Param('id') id: string): string {
     if (!validate(id)) {
-      throw new HttpException(errors.BAD_REQUEST, HttpStatus.BAD_REQUEST);
+      throw new HttpException(errors.INVALID_ID, HttpStatus.BAD_REQUEST);
     }
 
     const res = this.favsService.addArtist(id);
 
     if (!res) {
       throw new HttpException(
-        'Artist not found',
+        errors.ARTIST_NOT_EXIST,
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }
@@ -79,13 +79,13 @@ export class FavsController {
   @Delete('track/:id')
   removeTrack(@Param('id') id: string) {
     if (!validate(id)) {
-      throw new HttpException(errors.BAD_REQUEST, HttpStatus.BAD_REQUEST);
+      throw new HttpException(errors.INVALID_ID, HttpStatus.BAD_REQUEST);
     }
 
     const res = this.favsService.removeTrack(id);
 
     if (!res) {
-      throw new HttpException('Track not found', HttpStatus.NOT_FOUND);
+      throw new HttpException(errors.TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
 
     return 'Track deleted from favorites';
@@ -95,13 +95,13 @@ export class FavsController {
   @Delete('album/:id')
   removeAlbum(@Param('id') id: string) {
     if (!validate(id)) {
-      throw new HttpException(errors.BAD_REQUEST, HttpStatus.BAD_REQUEST);
+      throw new HttpException(errors.INVALID_ID, HttpStatus.BAD_REQUEST);
     }
 
     const res = this.favsService.removeAlbum(id);
 
     if (!res) {
-      throw new HttpException('Album not found', HttpStatus.NOT_FOUND);
+      throw new HttpException(errors.ALBUM_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
 
     return 'Album deleted from favorites';
@@ -110,15 +110,14 @@ export class FavsController {
   @HttpCode(204)
   @Delete('artist/:id')
   removeArtist(@Param('id') id: string) {
-    console.log('id', id);
     if (!validate(id)) {
-      throw new HttpException(errors.BAD_REQUEST, HttpStatus.BAD_REQUEST);
+      throw new HttpException(errors.INVALID_ID, HttpStatus.BAD_REQUEST);
     }
 
     const res = this.favsService.removeArtist(id);
 
     if (!res) {
-      throw new HttpException('Artist not found', HttpStatus.NOT_FOUND);
+      throw new HttpException(errors.ARTIST_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
 
     return 'Artist deleted from favorites';

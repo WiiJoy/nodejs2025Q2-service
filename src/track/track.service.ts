@@ -48,14 +48,14 @@ export class TrackService {
     if (!validate(id)) {
       return {
         data: null,
-        error: errors.BAD_REQUEST,
+        error: errors.INVALID_ID,
       };
     }
 
     if (!track) {
       return {
         data: null,
-        error: errors.NOT_FOUND,
+        error: errors.TRACK_NOT_FOUND,
       };
     }
 
@@ -82,7 +82,7 @@ export class TrackService {
     if (!updateTrack) {
       return {
         data: null,
-        error: errors.NOT_FOUND,
+        error: errors.TRACK_NOT_FOUND,
       };
     }
 
@@ -103,7 +103,7 @@ export class TrackService {
     if (index < 0) {
       return {
         data: null,
-        error: errors.NOT_FOUND,
+        error: errors.TRACK_NOT_FOUND,
       };
     }
 

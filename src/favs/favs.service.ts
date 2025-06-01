@@ -91,8 +91,6 @@ export class FavsService {
 
     if (index === -1) return false;
 
-    console.log('remove', id, index);
-
     this.database.favorites.artists.splice(index, 1);
 
     return true;

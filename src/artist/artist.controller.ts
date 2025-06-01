@@ -45,11 +45,11 @@ export class ArtistController {
   findOne(@Param('id') id: string) {
     const res = this.artistService.findOne(id);
 
-    if (res.error === errors.NOT_FOUND) {
-      throw new HttpException(errors.NOT_FOUND, HttpStatus.NOT_FOUND);
+    if (res.error === errors.ARTIST_NOT_FOUND) {
+      throw new HttpException(errors.ARTIST_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
-    if (res.error === errors.BAD_REQUEST) {
-      throw new HttpException(errors.BAD_REQUEST, HttpStatus.BAD_REQUEST);
+    if (res.error === errors.INVALID_ID) {
+      throw new HttpException(errors.INVALID_ID, HttpStatus.BAD_REQUEST);
     }
 
     return res.data;
@@ -59,16 +59,13 @@ export class ArtistController {
   @Put(':id')
   update(@Param('id') id: string, @Body() dto: ArtistCreate) {
     if (!validate(id)) {
-      throw new HttpException(errors.BAD_REQUEST, HttpStatus.BAD_REQUEST);
+      throw new HttpException(errors.INVALID_ID, HttpStatus.BAD_REQUEST);
     }
 
     const res = this.artistService.update(id, dto);
 
-    if (res.error === errors.NOT_FOUND) {
-      throw new HttpException(errors.NOT_FOUND, HttpStatus.NOT_FOUND);
-    }
-    if (res.error === errors.WRONG_PASSWORD) {
-      throw new HttpException(errors.WRONG_PASSWORD, HttpStatus.FORBIDDEN);
+    if (res.error === errors.ARTIST_NOT_FOUND) {
+      throw new HttpException(errors.ARTIST_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
     if (res.error === errors.BAD_REQUEST) {
       throw new HttpException(errors.BAD_REQUEST, HttpStatus.BAD_REQUEST);
@@ -81,12 +78,12 @@ export class ArtistController {
   @HttpCode(204)
   remove(@Param('id') id: string) {
     if (!validate(id)) {
-      throw new HttpException(errors.BAD_REQUEST, HttpStatus.BAD_REQUEST);
+      throw new HttpException(errors.INVALID_ID, HttpStatus.BAD_REQUEST);
     }
     const res = this.artistService.remove(id);
 
-    if (res.error === errors.NOT_FOUND) {
-      throw new HttpException(errors.NOT_FOUND, HttpStatus.NOT_FOUND);
+    if (res.error === errors.ARTIST_NOT_FOUND) {
+      throw new HttpException(errors.ARTIST_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
   }
 }

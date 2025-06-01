@@ -49,14 +49,14 @@ export class AlbumService {
     if (!validate(id)) {
       return {
         data: null,
-        error: errors.BAD_REQUEST,
+        error: errors.INVALID_ID,
       };
     }
 
     if (!album) {
       return {
         data: null,
-        error: errors.NOT_FOUND,
+        error: errors.ALBUM_NOT_FOUND,
       };
     }
 
@@ -83,7 +83,7 @@ export class AlbumService {
     if (!updateAlbum) {
       return {
         data: null,
-        error: errors.NOT_FOUND,
+        error: errors.ALBUM_NOT_FOUND,
       };
     }
 
@@ -103,7 +103,7 @@ export class AlbumService {
     if (index < 0) {
       return {
         data: null,
-        error: errors.NOT_FOUND,
+        error: errors.ALBUM_NOT_FOUND,
       };
     }
 

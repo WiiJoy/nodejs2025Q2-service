@@ -29,14 +29,14 @@ export class UserService {
     if (!validate(id)) {
       return {
         data: null,
-        error: errors.BAD_REQUEST,
+        error: errors.INVALID_ID,
       };
     }
 
     if (!user) {
       return {
         data: null,
-        error: errors.NOT_FOUND,
+        error: errors.USER_NOT_FOUND,
       };
     }
 
@@ -92,7 +92,7 @@ export class UserService {
     if (!updateUser) {
       return {
         data: null,
-        error: errors.NOT_FOUND,
+        error: errors.USER_NOT_FOUND,
       };
     }
 
@@ -110,8 +110,6 @@ export class UserService {
     const returnedUser = { ...updateUser };
     delete returnedUser.password;
 
-    console.log('returnedUser', returnedUser);
-
     return {
       data: returnedUser,
       error: null,
@@ -124,7 +122,7 @@ export class UserService {
     if (index < 0) {
       return {
         data: null,
-        error: errors.NOT_FOUND,
+        error: errors.USER_NOT_FOUND,
       };
     }
 
