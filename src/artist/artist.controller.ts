@@ -25,7 +25,6 @@ export class ArtistController {
   @UsePipes(new ValidationPipe())
   @Post()
   create(@Body() dto: ArtistCreate) {
-    console.log('post', dto);
     const res = this.artistService.create(dto);
 
     if (res.error === errors.BAD_REQUEST) {
