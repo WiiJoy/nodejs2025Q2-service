@@ -24,7 +24,6 @@ export class UserService {
   }
 
   getUserById(id: string): UserResponse {
-    console.log('getUserById', id);
     const user = this.database.users.find((user) => user.id === id);
 
     if (!validate(id)) {
