@@ -23,6 +23,10 @@ cd nodejs2025Q2-service
 npm install
 ```
 
+## Setting ENV
+
+Rename `.env.example` to `.env`
+
 ## Running application
 
 ```
