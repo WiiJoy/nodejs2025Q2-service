@@ -89,7 +89,7 @@ export class AlbumService {
 
     updateAlbum.name = dto.name;
     updateAlbum.year = dto.year;
-    updateAlbum.artistId = dto.artistId || null;
+    updateAlbum.artistId = dto.artistId || updateAlbum.artistId;
 
     return {
       data: updateAlbum,
