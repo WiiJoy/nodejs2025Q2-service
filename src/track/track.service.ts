@@ -88,8 +88,8 @@ export class TrackService {
 
     updateTrack.name = dto.name;
     updateTrack.duration = dto.duration;
-    updateTrack.albumId = dto.albumId || updateTrack.albumId;
-    updateTrack.artistId = dto.artistId || updateTrack.artistId;
+    if (dto.hasOwnProperty('albumId')) updateTrack.albumId = dto.albumId;
+    if (dto.hasOwnProperty('artistId')) updateTrack.artistId = dto.artistId;
 
     return {
       data: updateTrack,

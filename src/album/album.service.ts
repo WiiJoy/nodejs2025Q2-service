@@ -89,7 +89,8 @@ export class AlbumService {
 
     updateAlbum.name = dto.name;
     updateAlbum.year = dto.year;
-    updateAlbum.artistId = dto.artistId || updateAlbum.artistId;
+
+    if (dto.hasOwnProperty('artistId')) updateAlbum.artistId = dto.artistId;
 
     return {
       data: updateAlbum,
