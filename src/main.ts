@@ -16,5 +16,7 @@ async function bootstrap() {
   const doc = await readFile(apiLink, 'utf8');
   SwaggerModule.setup('doc', app, load(doc) as OpenAPIObject);
   await app.listen(PORT);
+  console.log(`App running on http://localhost:${PORT}!`)
+  console.log(`API is available on http://localhost:${PORT}/doc`)
 }
 bootstrap();
