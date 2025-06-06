@@ -631,7 +631,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Favorites'
-  /favs/tracks/{id}:
+  /favs/track/{id}:
     parameters:
       - name: id
         in: path
@@ -663,7 +663,7 @@ paths:
           description: Bad request. id is invalid (not uuid)
         404:
           description: Track not found.
-  /favs/albums/{id}:
+  /favs/album/{id}:
     parameters:
       - name: id
         in: path
@@ -695,7 +695,7 @@ paths:
           description: Bad request. id is invalid (not uuid)
         404:
           description: Album not found.
-  /favs/artists/{id}:
+  /favs/artist/{id}:
     parameters:
       - name: id
         in: path
