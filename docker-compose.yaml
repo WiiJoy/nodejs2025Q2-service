@@ -9,7 +9,7 @@ services:
     env_file:
       - .env
     ports:
-      - 4000:4000
+      - ${PORT}:${PORT}
     depends_on:
       - postgres
     volumes:
@@ -27,7 +27,7 @@ services:
     env_file:
       - .env
     ports:
-      - 5432:5432
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
       - pgdata:/var/lib/postgresql/data
       - pglog:/var/log/postgresql
