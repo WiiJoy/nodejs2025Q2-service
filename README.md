@@ -27,10 +27,10 @@ npm install
 
 Rename `.env.example` to `.env`
 
-## Running application
+## Running application with Docker
 
 ```
-npm run start
+npm run docker:up
 ```
 
 After starting the app on port (4000 as default) you can open
@@ -50,6 +50,11 @@ To run only one of all test suites
 
 ```
 npm run test -- <path to suite>
+```
+
+## Stopping application with Docker
+```
+npm run docker:down
 ```
 
 ### Auto-fix and format
