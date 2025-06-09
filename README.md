@@ -8,7 +8,13 @@
 ## Downloading
 
 ```
-git clone {repository URL}
+git clone https://github.com/WiiJoy/nodejs2025Q2-service.git
+```
+
+## Go to repo folder
+
+```
+cd nodejs2025Q2-service
 ```
 
 ## Installing NPM modules
@@ -17,15 +23,18 @@ git clone {repository URL}
 npm install
 ```
 
-## Running application
+## Setting ENV
+
+Rename `.env.example` to `.env`
+
+## Running application with Docker
 
 ```
-npm start
+npm run docker:up
 ```
 
 After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
 
 ## Testing
 
@@ -43,16 +52,9 @@ To run only one of all test suites
 npm run test -- <path to suite>
 ```
 
-To run all test with authorization
-
+## Stopping application with Docker
 ```
-npm run test:auth
-```
-
-To run only specific test suite with authorization
-
-```
-npm run test:auth -- <path to suite>
+npm run docker:down
 ```
 
 ### Auto-fix and format
