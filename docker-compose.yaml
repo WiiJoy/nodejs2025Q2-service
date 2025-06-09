@@ -8,3 +8,16 @@ services:
       dockerfile: Dockerfile
     ports:
       - 4000:4000
+    depends_on:
+      - postgres
+  
+  postgres:
+    container_name: wiijoy-library-db
+    restart: always
+    build:
+      context: ./database
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+     - 5432:5432
