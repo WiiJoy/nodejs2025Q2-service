@@ -6,10 +6,17 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    env_file:
+      - .env
     ports:
       - 4000:4000
     depends_on:
       - postgres
+    volumes:
+      - ./src:/app/src
+      - node_modules:/usr/src/app/node_modules
+    networks:
+      - wiijoy-app
   
   postgres:
     container_name: wiijoy-library-db
@@ -20,4 +27,19 @@ services:
     env_file:
       - .env
     ports:
-     - 5432:5432
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - pglog:/var/log/postgresql
+    networks:
+      - wiijoy-app
+
+volumes:
+  pgdata:
+  pglog:
+  node_modules:
+
+networks:
+  wiijoy-app:
+    name: wiijoy-app
+    driver: bridge
